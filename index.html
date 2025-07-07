@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Grill – Kahveler</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="antialiased">
+  <div class="flex min-h-screen">
+    <!-- Kenar Menü -->
+    <aside class="w-1/4 bg-[#aaa389] text-white">
+      <div class="p-4 border-b border-[#8f856b]">
+        <h2 class="text-sm font-semibold uppercase">The Grill</h2>
+        <p class="mt-1 text-xs">Masa: 3 · Kişi: 1</p>
+      </div>
+      <nav id="kategori-list" class="p-4 space-y-2">
+        <!-- Kategoriler JS ile yüklenecek -->
+      </nav>
+    </aside>
+
+    <!-- Ana İçerik -->
+    <div class="flex-1 flex flex-col">
+      <header class="bg-black text-white px-6 py-3 flex justify-between items-center">
+        <h1 id="baslik" class="text-lg font-medium">Kahveler</h1>
+        <div class="space-x-4 text-xs">
+          <button class="hover:underline">Geri Bildirim</button>
+          <button class="hover:underline">Garson Çağır</button>
+          <button class="hover:underline">Hesabı Gör</button>
+          <button class="hover:underline">Siparişleri Göster</button>
+        </div>
+      </header>
+
+      <main id="kart-grid" class="p-6 grid grid-cols-2 md:grid-cols-3 gap-6 overflow-auto">
+        <!-- Kahve kartları JS ile yüklenecek -->
+      </main>
+
+      <!-- Modal -->
+      <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg p-6 w-80 text-center shadow-xl">
+          <p id="modal-message" class="mb-4 text-gray-800"></p>
+          <button id="modal-close" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">
+            Kapat
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- Veriler ---
+    const kategoriler = [
+      "Yiyecekler","Izgaralar","Deniz Ürünleri","Karışık Pilav",
+      "Baharatlı Turşular","Makarna","A la carte","Kahveler",
+      "Öğle Menüsü","Çorbalar","Pirinç","Tatlılar"
+    ];
+    const secilenKategori = "Kahveler";
+
+    const kahveler = [
+      { id: 1, name: "Espresso", description: "Yoğun ve güçlü espresso.", image: "/espresso.png" },
+      { id: 2, name: "Latte", description: "Sütlü ve yumuşak latte.", image: "/latte.png" },
+      { id: 3, name: "Limonata", description: "Soğuk ve ferah.", image: "/limonata.png" },
+      { id: 4, name: "Mocha", description: "Çikolata aromalı mocha.", image: "/mocha.png" },
+      { id: 5, name: "Cappuccino", description: "Köpüklü cappuccino.", image: "/capuuciona.png" },
+      { id: 6, name: "Türk Kahvesi", description: "Geleneksel aromalı Türk kahvesi.", image: "/turk-kahvesı-2.png" },
+      { id: 7, name: "Çay", description: "Geleneksel çay.", image: "/çay-2.png" },
+      { id: 8, name: "Ice Latte", description: "Soğuk ve kremalı latte.", image: "/ıcelatte.png" },
+    ];
+
+    // --- Kategorileri Render Et ---
+    const kategoriList = document.getElementById("kategori-list");
+    kategoriler.forEach(kat => {
+      const div = document.createElement("div");
+      div.textContent = kat;
+      div.className = `
+        px-3 py-2 rounded cursor-pointer
+        ${ kat === secilenKategori
+          ? "bg-[#efead8] text-black font-semibold"
+          : "hover:bg-[#8f856b]" }
+      `;
+      kategoriList.appendChild(div);
+    });
+
+    // --- Kahveleri Render Et ---
+    const kartGrid = document.getElementById("kart-grid");
+    kahveler.forEach(coffee => {
+      const card = document.createElement("div");
+      card.className = "bg-white rounded-lg overflow-hidden shadow-lg flex flex-col";
+
+      card.innerHTML = `
+        <div class="relative w-full h-48 bg-gray-100 flex items-center justify-center">
+          <img src="${coffee.image}" alt="${coffee.name}" class="object-contain max-h-full"/>
+        </div>
+        <div class="p-4 flex-grow flex flex-col">
+          <h3 class="font-semibold text-gray-800 mb-1">${coffee.name}</h3>
+          <p class="text-sm text-gray-600 mb-4 flex-grow">${coffee.description}</p>
+          <button data-id="${coffee.id}"
+                  class="order-btn mt-auto bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition">
+            Sipariş Ver
+          </button>
+        </div>
+      `;
+      kartGrid.appendChild(card);
+    });
+
+    // --- Modal İşlevselliği ---
+    const modal = document.getElementById("modal");
+    const modalMessage = document.getElementById("modal-message");
+    const modalClose = document.getElementById("modal-close");
+
+    document.querySelectorAll(".order-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const coffee = kahveler.find(c => c.id == btn.dataset.id);
+        modalMessage.textContent = `${coffee.name} siparişiniz alındı.`;
+        modal.classList.remove("hidden");
+      });
+    });
+
+    modalClose.addEventListener("click", () => {
+      modal.classList.add("hidden");
+      // Redirect etmek isterseniz:
+      window.location.href = "/ne-izlemek.html";
+    });
+  </script>
+</body>
+</html>

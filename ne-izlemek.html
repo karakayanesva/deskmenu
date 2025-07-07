@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ne İzlemek?</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-black text-white antialiased">
+  <!-- Header -->
+  <header class="fixed top-0 left-0 w-full flex items-center justify-between px-6 py-4 bg-black bg-opacity-70 z-50">
+    <div class="flex items-center space-x-8">
+      <span class="text-2xl font-bold">NETFLIX</span>
+      <nav class="space-x-4 text-sm">
+        <a href="#" class="hover:underline">Ana Sayfa</a>
+        <a href="#" class="hover:underline">Diziler</a>
+        <a href="#" class="hover:underline">Filmler</a>
+        <a href="#" class="hover:underline">Keşfet</a>
+        <a href="#" class="hover:underline">Listem</a>
+      </nav>
+    </div>
+    <div class="flex items-center space-x-4 text-sm">
+      <button class="hover:underline">Keşfet</button>
+      <button class="hover:underline">Çocuk</button>
+      <button class="hover:underline">Bildirimler</button>
+      <a href="index.html" class="hover:underline">Profil</a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="relative h-[60vh] w-full mt-[64px]">
+    <img src="/ati.jpeg" alt="Afiş" class="object-cover w-full h-full"/>
+    <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
+    <div class="absolute bottom-16 left-8 flex items-center space-x-4">
+      <button class="bg-white text-black px-6 py-2 rounded-md font-semibold shadow">Oynat</button>
+      <button class="bg-white bg-opacity-30 text-black px-6 py-2 rounded-md font-semibold shadow border border-white/50">Keşfet</button>
+    </div>
+  </section>
+
+  <!-- İçerik Satırları -->
+  <div id="rows" class="space-y-8 px-6 pb-12 pt-8"></div>
+
+  <script>
+    // Data
+    const satirlar = [
+      {
+        title: "Diziler",
+        items: [
+          { id: 1, title: "Stranger Things", image: "/strangertings.jpeg" },
+          { id: 2, title: "The Crown", image: "/The_Crown_season_1.jpeg" },
+          { id: 3, title: "La Casa de Papel", image: "/lacapapel.jpg" },
+          { id: 4, title: "Breaking Bad", image: "/breakingbad.jpeg" },
+          { id: 5, title: "Squid Game", image: "/squidgame.jpg" },
+          { id: 6, title: "You", image: "/you.jpg" },
+          { id: 7, title: "Atiye", image: "/atiye.jpeg" },
+          { id: 8, title: "Narcos", image: "/narcos.jpeg" },
+        ]
+      }
+    ];
+
+    // Render Satırlar
+    const container = document.getElementById("rows");
+    satirlar.forEach(row => {
+      const section = document.createElement("div");
+      section.innerHTML = `
+        <h2 class="text-xl font-semibold mb-4">${row.title}</h2>
+        <div class="flex space-x-4 overflow-x-auto">
+          ${row.items.map(item => `
+            <div class="min-w-[160px] flex-shrink-0">
+              <img 
+                src="${item.image}" 
+                alt="${item.title}" 
+                class="rounded-lg hover:scale-105 transition-transform w-full h-40 object-cover"
+              />
+              <p class="mt-2 text-sm">${item.title}</p>
+            </div>
+          `).join("")}
+        </div>
+      `;
+      container.appendChild(section);
+    });
+  </script>
+</body>
+</html>
